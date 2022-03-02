@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { FunctionComponent, useState } from "react";
 import { Button, Form, OverlayTrigger, Popover } from "react-bootstrap";
 
-function SummaryForm() {
+const SummaryForm: FunctionComponent = () => {
   const [iAgree, setIAgree] = useState(false);
   const popover = (
     <Popover id="terms-and-conditions-popover">
