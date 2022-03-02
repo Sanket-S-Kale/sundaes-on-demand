@@ -1,4 +1,9 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import SummaryForm from "../SummaryForm";
 
 test("test initial conditions", () => {
@@ -25,9 +30,29 @@ test("checking the I agree checkbox enables the button and unchecking it again d
     name: "Confirm order",
   });
 
-  fireEvent.click(iAgreeCheckbox);
+  userEvent.click(iAgreeCheckbox);
   expect(confirmOrderButton).toBeEnabled();
 
-  fireEvent.click(iAgreeCheckbox);
+  userEvent.click(iAgreeCheckbox);
   expect(confirmOrderButton).toBeDisabled();
+});
+
+test("popover response to hover", async () => {
+  render(<SummaryForm />);
+
+  const nullPopover = screen.queryByText(
+    /no ice-cream will actually be delivered/i
+  );
+  expect(nullPopover).not.toBeInTheDocument();
+
+  const termsAndConditions = screen.getByText(/terms and conditions/i);
+  userEvent.hover(termsAndConditions);
+
+  const popover = screen.getByText(/no ice-cream will actually be delivered/i);
+  expect(popover).toBeInTheDocument();
+
+  userEvent.unhover(termsAndConditions);
+  await waitForElementToBeRemoved(() =>
+    screen.queryByText(/no ice-cream will actually be delivered/i)
+  );
 });
