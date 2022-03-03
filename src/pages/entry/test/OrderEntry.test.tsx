@@ -1,6 +1,5 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "../../../test-utils/testing-library-utils";
 import { rest } from "msw";
-import { OrderDetailsProvider } from "../../../contexts/OrderDetails";
 import { server } from "../../../mocks/server";
 import OrderEntry from "../OrderEntry";
 
@@ -13,7 +12,7 @@ test("handles error for scoops and toppings routes", async () => {
       res(ctx.status(500));
     })
   );
-  render(<OrderEntry />, { wrapper: OrderDetailsProvider });
+  render(<OrderEntry />);
 
   await waitFor(async () => {
     const alerts = await screen.findAllByRole("alert");
