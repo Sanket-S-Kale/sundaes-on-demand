@@ -1,10 +1,16 @@
 import React from 'react';
-import './App.css';
+import { Container } from 'react-bootstrap';
+import { OrderDetailsProvider } from './contexts/OrderDetails';
+import OrderEntry from './pages/entry/OrderEntry';
 
 function App() {
   return (
-    <div className="App">
-    </div>
+    <Container>
+      <OrderDetailsProvider>
+        <OrderEntry />
+        {/* {summary page and entry page need provider and the confirmation page does not} */}
+      </OrderDetailsProvider>
+    </Container>
   );
 }
 
