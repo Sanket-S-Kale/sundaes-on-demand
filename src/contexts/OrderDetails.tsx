@@ -1,6 +1,28 @@
 import { createContext, useContext, useState, useMemo, useEffect } from "react";
 import { pricePerItem } from "../constants";
 
+export type OptionCountsType = {
+  scoops: Map<string, number>,
+  toppings: Map<string, number>,
+};
+
+export type Totals = {
+  scoops: string,
+  toppings: string,
+  grandTotal: string,
+};
+
+export type OrderComponentDetails = {
+  scoops: Map<string, number>,
+  toppings: Map<string, number>,
+  totals: Totals,
+}
+
+export type OrderDetailsContext = [
+  OrderComponentDetails,
+  (itemName: string, newItemCount: string, optionType: string) => void
+];
+
 const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -10,12 +32,7 @@ const formatCurrency = (amount: number) => {
 }
 
 //@ts-ignore
-const OrderDetails = createContext();
-
-export type OptionCountsType = {
-    scoops: Map<string, number>,
-    toppings: Map<string, number>,
-};
+const OrderDetails = createContext<OrderDetailsContext>();
 
 //create custom hook to heck whether we're inside a provider
 export const useOrderDetails = () => {

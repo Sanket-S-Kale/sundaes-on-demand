@@ -5,7 +5,7 @@ import axios from "axios";
 import ToppingOption from "./toppingOption/ToppingOption";
 import AlertBanner from "../common/AlertBanner";
 import { pricePerItem } from "../../constants";
-import { useOrderDetails } from "../../contexts/OrderDetails";
+import { Totals, useOrderDetails } from "../../contexts/OrderDetails";
 
 type OptionsProps = {
   type: string;
@@ -39,7 +39,9 @@ const Options: FunctionComponent<OptionsProps> = (props) => {
       key={item.name}
       name={item.name}
       imagePath={item.imagePath}
-      updateItemCount={(itemName, itemCount) => updateItemCount(itemName, itemCount, type)}
+      updateItemCount={(itemName, itemCount) =>
+        updateItemCount(itemName, itemCount, type)
+      }
     />
   ));
 
@@ -48,8 +50,10 @@ const Options: FunctionComponent<OptionsProps> = (props) => {
   ) : (
     <>
       <h2>{title}</h2>
-      <p>${pricePerItem[type as keyof (typeof pricePerItem)]} each</p>
-      <p>{title} total: {orderDetails.totals[type]}</p>
+      <p>${pricePerItem[type as keyof typeof pricePerItem]} each</p>
+      <p>
+        {title} total: {orderDetails.totals[type as keyof Totals]}
+      </p>
       <Row>{optionItems}</Row>
     </>
   );
